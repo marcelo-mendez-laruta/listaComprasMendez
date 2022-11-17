@@ -11,7 +11,7 @@ export default function App() {
   const [selectedTask, setSelectedTask] = useState(null);
 
   const onHandleTask = () => {
-    setTaskList((prevTaskList) => [...prevTaskList, {id: Math.random().toString(), value: task, background: getRandomBackgroundColor() }]);
+    setTaskList((prevTaskList) => [...prevTaskList, {id: Math.random().toString(), value: task, background: getRandomBackgroundColor(), completed: false}]);
     setTask('');
   }
 
@@ -26,7 +26,7 @@ export default function App() {
   }
 
   const renderItem = ({item}) => (
-    <TaskItem item={item} onHandleSelected={onHandleSelected} />
+    <TaskItem item={item} onHandleSelected={onHandleSelected} onHandleCompleteItem={onHandleCompleteItem}/>
   )
 
   const onHandleCancel = () => {
@@ -37,7 +37,14 @@ export default function App() {
     setTaskList((prevTaskList) => prevTaskList.filter((item) => item.id !== selectedTask.id))
     setModalVisible(!modalVisible);
   }
-
+  const onHandleCompleteItem = (item) => {
+    setTaskList((prevTaskList) => prevTaskList.map((task) => {
+      if(task.id === item.id){
+        return {...task, completed: !task.completed}
+      }
+      return task;
+    }))
+  }
   const onHandleChange = (text) => setTask(text);
 
   return (
